@@ -7,6 +7,13 @@ class User < ApplicationRecord
   has_many :books,dependent: :destroy
   has_many :favorites,dependent: :destroy
   has_many :book_comments,dependent: :destroy
+  # 自分がフォローしているユーザーとの関連
+  has_many :active_relationships, class_name: "Relationship",foreign_key: :follower_id,dependent: :destroy
+  has_many :followers,through: :active_relationships,source: :followed
+  
+  # 自分がフォローされるユーザーとの関連
+  has_many :passive_relationships, class_name: "Relationship",foreign_key: :followed_id,dependent: :destroy
+  has_many :followeds,through: :passive_relationships,source: :follower
 
   has_one_attached :profile_image
 
@@ -20,5 +27,9 @@ class User < ApplicationRecord
       profile_image.attach(io: File.open(file_path), filename: 'default-image.jpg', content_type: 'image/jpeg')
     end
     profile_image.variant(resize_to_limit: [width, height]).processed
+  end
+  
+  def followed_by?(user)
+    passive_relationships.find_by(follower_id: user.id).present?
   end
 end

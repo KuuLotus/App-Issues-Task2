@@ -22,8 +22,17 @@ class UsersController < ApplicationController
       redirect_to user_path(@user), notice: "You have updated user successfully."
     else
       render:edit
-
     end
+  end
+  
+  def follows
+    user=User.find(params[:id])
+    @users=user.followers
+  end
+  
+  def followers
+    user=User.find(params[:id])
+    @users=user.followeds
   end
 
   private

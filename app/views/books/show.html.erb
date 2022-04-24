@@ -40,12 +40,12 @@
       </table>
       <!--コメント表示-->
       <div>
-        <% @book.book_comments.each do |book_comment| %>
+        <% @book_comments.each do |book_comment| %>
           <p>
             <%= image_tag book_comment.user.get_profile_image(100,100) %>
             <%= book_comment.comment %>
             <% if book_comment.user == current_user %>
-              <%= link_to "Destroy",book_book_comment_path(@book,book_comment),method: :delete,class: "btn btn-sm btn-danger" %>
+              <%= link_to "Destroy",book_book_comment_path(book_comment.book_id,book_comment),method: :delete,class: "btn btn-sm btn-danger" %>
             <% end %>
           </p>
           <%= link_to book_comment.user.name,user_path(book_comment) %>

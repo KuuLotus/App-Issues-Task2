@@ -13,13 +13,15 @@
         <%= render "favorites/favorite",book: book %>
       </td>
       <td>コメント数:<%= book.book_comments.count %></td>
+      <td class="review-rating" data-score="<%= book.rate %>">
+      </td>
       <% if book.user == current_user %>
         <td><%= link_to 'Edit', edit_book_path(book), class: "btn btn-sm btn-success edit_book_#{book.id}" %></td>
         <td><%= link_to 'Destroy', book, method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_book_#{book.id}"%></td>
       <% end %>
     </tr>
   </table>
-  
+
 <% book.book_comments.each do |book_comment| %>
   <p>
     <%= image_tag book_comment.user.get_profile_image(100,100) %>
@@ -30,3 +32,14 @@
   </p>
   <%= link_to book_comment.user.name,user_path(book_comment.user_id) %>
 <% end %>
+
+<script>
+  $('.review-rating').empty();
+  $('.review-rating').raty({
+    readOnly: true,
+    score: function() {
+      return $(this).attr('data-score');
+    },
+    path: '/assets/'
+  });
+</script>

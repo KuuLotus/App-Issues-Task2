@@ -1,3 +1,5 @@
+
+
 <table class='table table-hover table-inverse'>
   <thead>
     <tr>
@@ -24,7 +26,21 @@
         <td>
           コメント数:<%= book.book_comments.count %>
         </td>
+        <!--レビュー-->
+        <td class="review-rating" data-score="<%= book.rate %>">
+        </td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<script>
+  $('.review-rating').empty();
+  $('.review-rating').raty({
+    readOnly: true,
+    score: function() {
+      return $(this).attr('data-score');
+    },
+    path: '/assets/'
+  });
+</script>

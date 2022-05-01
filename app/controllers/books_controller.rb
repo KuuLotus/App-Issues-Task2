@@ -10,7 +10,8 @@ class BooksController < ApplicationController
 
   def index
     @book=Book.new
-    @books = Book.all
+    @books = Book.order("id desc")
+    @books_review = Book.order("rate desc")
   end
 
   def create
@@ -46,7 +47,7 @@ class BooksController < ApplicationController
   private
 
   def book_params
-    params.require(:book).permit(:title,:body)
+    params.require(:book).permit(:title,:body,:rate)
   end
 
   def ensure_correct_user
